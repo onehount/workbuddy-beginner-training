@@ -1,0 +1,91 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 WorkBuddy Training Project
+
+This work is licensed under the Creative Commons Attribution 4.0
+International License. To view a copy of this license, visit
+https://creativecommons.org/licenses/by/4.0/
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+===============================================================================
+SCOPE
+===============================================================================
+
+This CC BY 4.0 license applies to the TEACHING CONTENT of this repository:
+
+  - 01-course-overview/          course objectives and agenda
+  - 02-slides/                   PPTX, PDF, slide outline, slide notes
+  - 03-instructor-guide/         instructor manual and speaking scripts
+  - 04-demo-inputs/              demo source documents, spreadsheets, templates
+  - 05-demo-outputs/             demo result documents
+  - 06-prompts/                  prompt library and explanations
+  - 07-screenshots/              screenshot walkthroughs and composites
+  - 08-design-assets/            cover art, social preview, masters
+  - 09-student-guide/            student guides and FAQ
+  - 10-agent-tasks/              task cards and acceptance criteria
+  - 11-quality-assurance/        review checklists
+  - README.md, README_EN.md, CHANGELOG.md, CONTRIBUTING.md, SECURITY.md
+
+Code and automation scripts (tools/, *.py, *.js, *.sh, *.ps1) are licensed
+under the MIT License. See LICENSE-CODE.
+
+===============================================================================
+YOU ARE FREE TO
+===============================================================================
+
+  Share  — copy and redistribute the material in any medium or format
+  Adapt  — remix, transform, and build upon the material
+           for any purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the license
+terms.
+
+===============================================================================
+UNDER THE FOLLOWING TERMS
+===============================================================================
+
+  Attribution — You must give appropriate credit, provide a link to the
+  license, and indicate if changes were made. You may do so in any reasonable
+  manner, but not in any way that suggests the licensor endorses you or your
+  use.
+
+  No additional restrictions — You may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license
+  permits.
+
+Suggested attribution:
+
+  "WorkBuddy 零基础办公任务实战教程" by WorkBuddy Training Project,
+  licensed under CC BY 4.0.
+  Source: https://github.com/onehount/workbuddy-beginner-training
+
+===============================================================================
+NOTICES
+===============================================================================
+
+1. TRADEMARKS
+   The WorkBuddy product name, user interface, logo and related trademarks
+   are the property of their respective owners and are NOT covered by this
+   license. This project is an independently produced public teaching
+   resource. It does not represent any official position of the product
+   vendor, and does not imply any commercial partnership or official
+   endorsement.
+
+2. FICTIONAL CONTENT
+   All brands, people, departments, campaigns, data and files used in the
+   demo case ("青屿茶研 QINGYU TEA LAB") are entirely fictional and created
+   for teaching purposes only. They bear no relation to any real company,
+   organisation or individual.
+
+3. THIRD-PARTY MATERIAL
+   Some material in this repository may originate from third parties under
+   their own licenses. See THIRD_PARTY_NOTICES.md. This CC BY 4.0 license
+   does not extend to such material.
+
+4. NO WARRANTY
+   Unless otherwise separately undertaken by the Licensor, to the extent
+   possible, the Licensor offers the Licensed Material as-is and as-available,
+   and makes no representations or warranties of any kind concerning the
+   Licensed Material.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode

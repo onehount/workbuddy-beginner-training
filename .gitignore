@@ -1,0 +1,83 @@
+# ============================================================
+# WorkBuddy 零基础教学项目 .gitignore
+# ============================================================
+
+# ---------- Office 临时文件 ----------
+~$*.docx
+~$*.xlsx
+~$*.pptx
+~$*.doc
+~$*.xls
+~$*.ppt
+*.tmp
+.~lock.*#
+
+# ---------- 系统文件 ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# ---------- 编辑器 ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- 项目专用：不入库的大文件 ----------
+# 录屏原始文件体积过大，仅保留说明文档
+12-video-backup/*.mp4
+12-video-backup/*.mov
+12-video-backup/*.avi
+12-video-backup/*.mkv
+
+# 截图中间产物（裁剪缓存）
+07-screenshots/.cache/
+07-screenshots/**/*.psd
+07-screenshots/**/*.xcf
+
+# 构建产物（由 tools/ 脚本生成，需要时重新构建）
+build/
+dist/
+.build-cache/
+
+# ---------- 项目专用：绝不入库的敏感内容 ----------
+# 任何名为 private / internal / confidential 的目录
+**/private/
+**/internal/
+**/confidential/
+**/_local/
+
+# 未脱敏的截图暂存区
+07-screenshots/_pending-review/
+
+# 凭据
+*.key
+*.pem
+.env
+.env.*
+credentials.json
+secrets.yaml
+
+# ---------- 例外：这些必须入库 ----------
+!releases/*.zip
+!12-video-backup/recording-notes.md
+!07-screenshots/screenshot-index.md
+!.gitignore
