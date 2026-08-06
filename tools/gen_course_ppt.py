@@ -92,6 +92,18 @@ SLIDES = [
                  "不敢交付 → 用「结果区验收 + 四查」功能把控质量"],
      "note": "把困境和后面的功能一一对应，让学员知道学这些有什么用。"},
 
+    # —— 产品发布会感：学会 WorkBuddy 你能得到什么 ——
+    {"type": "launch", "chapter": "第一章 为什么学习 WorkBuddy", "kicker": "产品发布会时刻",
+     "title": "学会 WorkBuddy，你得到什么",
+     "items": [
+         {"task": "整理会议纪要", "en": "not bad", "zh": "还行", "c": (0x95, 0xA5, 0xA6)},
+         {"task": "人工做通知", "en": "OK", "zh": "不错", "c": (0x2E, 0x6B, 0xE6)},
+         {"task": "自己做琐碎的工作总结", "en": "good", "zh": "挺好", "c": (0x17, 0xC0, 0xC7)},
+         {"task": "费时取分析报告", "en": "excellent", "zh": "很棒", "c": (0x27, 0xAE, 0x60)},
+         {"task": "一点一点花时间做 PPT", "en": "wonderful", "zh": "太赞了", "c": (0xF1, 0xC4, 0x0F)},
+     ],
+     "note": "用产品发布会式的层层递进，把「学会后能卸载的重复劳动」逐一揭晓：从会议纪要(not bad)到做 PPT(wonderful)，情绪逐级走高。讲的时候像发布会一样留停顿，让学员自己接住「这些以后都不用我干了」。五项正好对应后面的文档生成 / 通知 / 工作总结 / 数据分析 / PPT 五大功能。"},
+
     # ═══════════ 第二章 认识界面与起步 ═══════════
     {"type": "divider", "kicker": "第二章", "title": "认识 WorkBuddy 界面与起步",
      "note": "先知道东西在哪、怎么开始，才能谈功能。"},
@@ -345,6 +357,23 @@ SLIDES = [
                  "分析报告：事实 / 判断 / 建议分明，整体转化率 37.0%",
                  "复盘 PPT：12 页，每页一个结论"],
      "note": "这里不展开，成果在 05-demo-outputs/ 自行查看。"},
+
+    # —— 顺带展示：Demo 可视化结果（让大家扫一眼即可）——
+    {"type": "demo_charts", "chapter": "第五章 Demo 结果顺带展示", "kicker": "可视化结果",
+     "title": "Demo 可视化结果 · 渠道曝光与活动完成",
+     "images": [
+         {"file": "chart_exposure.png", "cap": "渠道曝光量（5 渠道合计 583,000 次）"},
+         {"file": "chart_campaigns.png", "cap": "市场活动完成率（4/5 完成，1 项延期）"},
+     ],
+     "note": "顺带展示：翻到这一页，让大家扫一眼数据长什么样即可，不必展开讲解。成果文件在 05-demo-outputs/ 可细看。"},
+    {"type": "demo_charts", "chapter": "第五章 Demo 结果顺带展示", "kicker": "可视化结果",
+     "title": "Demo 可视化结果 · 整体转化率（含纠错）",
+     "images": [
+         {"file": "chart_conversion.png",
+          "cap": "绿线 = 加权整体转化率 37.0%（正确）；红线 = 算术平均 41.8%（错误，不可用）"},
+     ],
+     "note": "这是课程最重要的纠错点：整体转化率必须用加权（总有效÷总线索），不能用五渠道算术平均。让大家看一眼绿/红两条线即可，不必推导。"},
+
     {"type": "content", "chapter": "第五章 Demo 结果顺带展示", "kicker": "复现",
      "title": "一条命令复现全部 Demo",
      "bullets": ["所有 Office 文件由 tools/ 下 Python 脚本生成",
@@ -510,6 +539,41 @@ def render_pptx(path):
                  "在哪里：左侧栏管任务，中间对话区下达与追问，右侧结果区验收产物。",
                  14, BLUE, bold=True)
 
+    # —— 产品发布会感：学会 WB 你能得到什么 ——
+    def add_launch(slide, s):
+        bg(slide, NAVY)
+        add_text(slide, 0.6, 0.42, 12, 0.4, s["kicker"], 16, CYAN, bold=True)
+        add_text(slide, 0.6, 0.82, 12.1, 0.7, s["title"], 30, WHITE, bold=True)
+        ln = slide.shapes.add_shape(1, Inches(0.6), Inches(1.55), Inches(3.2), Inches(0.04))
+        ln.fill.solid(); ln.fill.fore_color.rgb = CYAN; ln.line.fill.background()
+        items = s["items"]; top = 1.78; rh = 0.92; gap = 0.12
+        for i, it in enumerate(items):
+            y = top + i * (rh + gap)
+            col = PptRGB(*it["c"])
+            txt_on = INK if i == 0 else WHITE
+            rounded(slide, 0.6, y, 12.13, rh, PptRGB(0x24, 0x4A, 0x82), col, 1.5)
+            # 序号圆
+            circ = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(0.85), Inches(y + 0.16),
+                                          Inches(0.6), Inches(0.6))
+            circ.fill.solid(); circ.fill.fore_color.rgb = col; circ.line.fill.background()
+            circ.shadow.inherit = False
+            tfc = circ.text_frame; tfc.vertical_anchor = MSO_ANCHOR.MIDDLE; tfc.word_wrap = False
+            pc = tfc.paragraphs[0]; pc.text = str(i + 1)
+            pc.font.size = PptPt(18); pc.font.bold = True; pc.font.name = "微软雅黑"
+            pc.font.color.rgb = txt_on; pc.alignment = PP_ALIGN.CENTER
+            # 任务文字
+            add_text(slide, 1.75, y + 0.2, 8.0, 0.55,
+                     "不需要再 " + it["task"], 19, WHITE, bold=True)
+            # 评分药丸
+            pill = rounded(slide, 9.95, y + 0.16, 2.55, 0.6, col, col, 1)
+            tp = pill.text_frame; tp.word_wrap = True; tp.vertical_anchor = MSO_ANCHOR.MIDDLE
+            pp = tp.paragraphs[0]; pp.text = it["en"]
+            pp.font.size = PptPt(16); pp.font.bold = True; pp.font.name = "微软雅黑"
+            pp.font.color.rgb = txt_on; pp.alignment = PP_ALIGN.CENTER
+            p2 = tp.add_paragraph(); p2.text = it["zh"]
+            p2.font.size = PptPt(11); p2.font.name = "微软雅黑"
+            p2.font.color.rgb = txt_on; p2.alignment = PP_ALIGN.CENTER
+
     for idx, s in enumerate(SLIDES, start=1):
         slide = prs.slides.add_slide(blank)
         t = s["type"]
@@ -542,6 +606,10 @@ def render_pptx(path):
             add_mockup(slide, s)
             footer(slide, idx, s.get("chapter", ""))
 
+        elif t == "launch":
+            add_launch(slide, s)
+            footer(slide, idx, s.get("chapter", ""))
+
         elif t == "chart":
             bg(slide, WHITE)
             top_bar(slide, s["title"], s["kicker"])
@@ -553,6 +621,26 @@ def render_pptx(path):
                 add_text(slide, 0.8, 2.0, 10, 3, f"[图表缺失: {s['image']}]", 18, RED)
             if s.get("bullets"):
                 add_bullets(slide, 10.0, 1.6, 3.0, 4.8, s["bullets"], size=16)
+            footer(slide, idx, s.get("chapter", ""))
+
+        elif t == "demo_charts":
+            bg(slide, WHITE)
+            top_bar(slide, s["title"], s["kicker"])
+            imgs = s["images"]
+            if len(imgs) == 1:
+                ip = os.path.join(CHART_DIR, imgs[0]["file"])
+                if os.path.exists(ip):
+                    slide.shapes.add_picture(ip, Inches(1.92), Inches(1.45), width=Inches(9.5))
+                add_text(slide, 1.92, 6.62, 9.5, 0.5, imgs[0]["cap"], 15, BLUE, bold=True)
+            else:
+                w = 5.9; h = round(w * 9 / 16, 2); xs = [0.7, 6.73]
+                for i, im in enumerate(imgs):
+                    ip = os.path.join(CHART_DIR, im["file"])
+                    if os.path.exists(ip):
+                        slide.shapes.add_picture(ip, Inches(xs[i]), Inches(1.6), width=Inches(w))
+                    add_text(slide, xs[i], 1.6 + h + 0.08, w, 0.6, im["cap"], 14, BLUE, bold=True)
+            add_text(slide, 0.6, 6.92, 12.13, 0.4,
+                     "📌 顺带展示：翻到此页让大家扫一眼即可，详细结果见 05-demo-outputs/。", 13, GREY)
             footer(slide, idx, s.get("chapter", ""))
 
         elif t == "compare":
@@ -705,6 +793,29 @@ def render_pdf(path):
             text(50, ph - 230, "在哪里：左侧栏管任务，中间下达与追问，右侧验收产物。", 14, BLUE_H, bold=True)
             footer_p(idx, s.get("chapter", ""))
 
+        elif t == "launch":
+            rect(0, 0, pw, ph, NAVY_H)
+            text(50, ph - 55, s["kicker"], 15, (0x17, 0xC0, 0xC7), bold=True)
+            text(50, ph - 95, s["title"], 26, (0xFF, 0xFF, 0xFF), bold=True)
+            rect(50, ph - 118, 180, 3, (0x17, 0xC0, 0xC7))
+            items = s["items"]; top = ph - 150; rh = 88; gap = 14
+            for i, it in enumerate(items):
+                y = top - i * (rh + gap)
+                col = it["c"]
+                rect(40, y - rh, pw - 80, rh, (0x24, 0x4A, 0x82), stroke=col)
+                c.setFillColorRGB(*[v / 255 for v in col])
+                c.circle(62, y - rh / 2, 26, stroke=0, fill=1)
+                c.setFillColorRGB(*([0, 0, 0] if i == 0 else [1, 1, 1]))
+                c.setFont(FONT, 15); c.drawCentredString(62, y - rh / 2 - 6, str(i + 1))
+                c.setFillColorRGB(1, 1, 1); c.setFont(FONT, 16)
+                c.drawString(108, y - rh / 2 - 7, "不需要再 " + it["task"])
+                rect(pw - 210, y - rh / 2 - 26, 165, 52, col)
+                tc = (0, 0, 0) if i == 0 else (1, 1, 1)
+                c.setFillColorRGB(*tc)
+                c.setFont(FONT, 15); c.drawCentredString(pw - 210 + 82, y - rh / 2 + 4, it["en"])
+                c.setFont(FONT, 11); c.drawCentredString(pw - 210 + 82, y - rh / 2 - 16, it["zh"])
+            footer_p(idx, s.get("chapter", ""))
+
         elif t == "chart":
             rect(0, 0, pw, ph, (0xFF, 0xFF, 0xFF))
             rect(0, ph - 90, pw, 90, NAVY_H)
@@ -720,6 +831,33 @@ def render_pdf(path):
                 text(50, ph - 450, s["caption"], 13, BLUE_H)
             if s.get("bullets"):
                 bullets(s.get("bullets"), 540, ph - 130, 14, GREY_H, lh=24)
+            footer_p(idx, s.get("chapter", ""))
+
+        elif t == "demo_charts":
+            rect(0, 0, pw, ph, (0xFF, 0xFF, 0xFF))
+            rect(0, ph - 90, pw, 90, NAVY_H)
+            text(50, ph - 62, s["title"], 22, (0xFF, 0xFF, 0xFF), bold=True)
+            text(50, ph - 82, s["kicker"], 12, (0xEA, 0xF1, 0xFD))
+            from reportlab.lib.utils import ImageReader
+            imgs = s["images"]
+            if len(imgs) == 1:
+                ip = os.path.join(CHART_DIR, imgs[0]["file"])
+                if os.path.exists(ip):
+                    ir = ImageReader(ip); iw, ih = ir.getSize()
+                    scale = min((pw - 120) / iw, (ph - 260) / ih) * 0.9
+                    c.drawImage(ir, 60, ph - 430, iw * scale, ih * scale)
+                text(60, ph - 450, imgs[0]["cap"], 13, BLUE_H, bold=True)
+            else:
+                w = (pw - 140) / 2
+                for i, im in enumerate(imgs):
+                    ip = os.path.join(CHART_DIR, im["file"])
+                    x = 60 + i * (w + 20)
+                    if os.path.exists(ip):
+                        ir = ImageReader(ip); iw, ih = ir.getSize()
+                        scale = min(w / iw, (ph - 260) / ih) * 0.9
+                        c.drawImage(ir, x, ph - 430, iw * scale, ih * scale)
+                    text(x, ph - 450, im["cap"], 13, BLUE_H, bold=True)
+            text(50, ph - 480, "顺带展示：翻到此页让大家扫一眼即可，详细结果见 05-demo-outputs/。", 13, GREY_H)
             footer_p(idx, s.get("chapter", ""))
 
         elif t == "compare":
@@ -780,11 +918,14 @@ def write_outline(path):
              "> 本版本为「功能导向」：先讲各功能是什么/干什么/怎么用/在哪里，",
              "> 用统一案例演示使用流程，再加进阶技巧，Demo 结果顺带展示。", ""]
     type_cn = {"cover": "封面", "divider": "章节", "content": "内容", "feature": "功能",
-               "mockup": "界面示意", "chart": "图表", "compare": "对比", "flow": "流程", "closing": "结语"}
+               "mockup": "界面示意", "chart": "图表", "compare": "对比", "flow": "流程",
+               "closing": "结语", "launch": "发布会", "demo_charts": "可视化"}
     for i, s in enumerate(SLIDES, start=1):
         extra = ""
         if s.get("image"):
             extra += f" | 图:{s['image']}"
+        if s.get("images"):
+            extra += f" | 图×{len(s['images'])}"
         if s.get("steps"):
             extra += f" | 流程({len(s['steps'])}步)"
         if s["type"] == "feature":
