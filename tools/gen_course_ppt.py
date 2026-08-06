@@ -34,6 +34,7 @@ from reportlab.pdfgen import canvas as RLCanvas
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 SLIDE_DIR = os.path.join(ROOT, "02-slides")
 CHART_DIR = os.path.join(ROOT, "08-design-assets", "charts")
+SCREENSHOT_DIR = os.path.join(ROOT, "08-design-assets", "screenshots")
 
 # ── 主题色 ──
 NAVY = PptRGB(0x1B, 0x3A, 0x6B)
@@ -93,7 +94,7 @@ SLIDES = [
      "note": "把困境和后面的功能一一对应，让学员知道学这些有什么用。"},
 
     # —— 产品发布会感：学会 WorkBuddy 你能得到什么 ——
-    {"type": "launch", "chapter": "第一章 为什么学习 WorkBuddy", "kicker": "产品发布会时刻",
+    {"type": "launch", "chapter": "第一章 为什么学习 WorkBuddy", "kicker": "",
      "title": "学会 WorkBuddy，你得到什么",
      "items": [
          {"task": "整理会议纪要", "en": "not bad", "zh": "还行", "c": (0x95, 0xA5, 0xA6)},
@@ -113,15 +114,13 @@ SLIDES = [
                  "能读你的本地文件、写文件、跨步骤推进，不只是问答",
                  "与传统 AI 对话的区别：能实际操作文件、有任务连续性、交付可验收结果"],
      "note": "用「能不能处理我的文件」来区分问答工具和 WorkBuddy。"},
-    {"type": "mockup", "chapter": "第二章 认识界面与起步", "kicker": "界面",
+    {"type": "real_ui", "chapter": "第二章 认识界面与起步", "kicker": "实际界面",
+     "title": "界面三区总览（东西在哪里）",
+     "image": "real-ui.png",
+     "note": "用户补充：先放一张 WorkBuddy 实际界面截图，让大家建立直观印象，再讲抽象结构。"},
+    {"type": "mockup", "chapter": "第二章 认识界面与起步", "kicker": "抽象界面",
      "title": "界面三区总览（东西在哪里）",
      "note": "整页都是「在哪里」。建议手指屏幕三区逐一讲。"},
-    {"type": "content", "chapter": "第二章 认识界面与起步", "kicker": "起步①",
-     "title": "第一步：确认积分充足",
-     "bullets": ["设计、生成图片 / 视频等多模态功能会消耗积分（信用点）",
-                 "开始重任务前，先在账号 / 设置中确认积分余额充足",
-                 "积分不足时系统会提示，避免生成到一半中断"],
-     "note": "用户特别提到「确认积分充足」作为流程起点，务必放在第一步。"},
     {"type": "content", "chapter": "第二章 认识界面与起步", "kicker": "起步②",
      "title": "第二步：选择工作模式",
      "bullets": ["Craft（你说我做）：直接动手产出结果，最快",
@@ -129,6 +128,12 @@ SLIDES = [
                  "Ask（只看不说）：只回答、只读，不改动任何文件",
                  "在哪里：对话区顶部或新建任务时的模式切换"],
      "note": "新手建议先用 Plan，看清步骤再放手。"},
+    {"type": "content", "chapter": "第二章 认识界面与起步", "kicker": "起步①",
+     "title": "第一步：确认积分充足",
+     "bullets": ["设计、生成图片 / 视频等多模态功能会消耗积分（信用点）",
+                 "开始重任务前，先在账号 / 设置中确认积分余额充足",
+                 "积分不足时系统会提示，避免生成到一半中断"],
+     "note": "多模态 / 设计功能消耗信用点，开始重任务前先确认余额充足。"},
     {"type": "content", "chapter": "第二章 认识界面与起步", "kicker": "起步③",
      "title": "第三步：一句话下达任务 + 选工作空间",
      "bullets": ["在对话区底部输入框，用自然语言写需求，如「把这份会议记录整理成纪要」",
@@ -399,7 +404,7 @@ SLIDES = [
                  "二次开发请遵守虚构声明与双许可证"],
      "note": "演示仓库结构即可，呼应连接器功能⑧。"},
     {"type": "closing", "kicker": "寄语", "title": "写给刚起步的你",
-     "bullets": ["初入职场，不必一次写出完美指令",
+     "bullets": ["开始使用 AI，不必一次写出完美指令",
                  "理解工作本质，知道目标与判断标准",
                  "保持好奇，持续学习，与 AI 协同成长"],
      "note": "放慢语速，给学员留出思考空间。"},
@@ -542,11 +547,16 @@ def render_pptx(path):
     # —— 产品发布会感：学会 WB 你能得到什么 ——
     def add_launch(slide, s):
         bg(slide, NAVY)
-        add_text(slide, 0.6, 0.42, 12, 0.4, s["kicker"], 16, CYAN, bold=True)
-        add_text(slide, 0.6, 0.82, 12.1, 0.7, s["title"], 30, WHITE, bold=True)
-        ln = slide.shapes.add_shape(1, Inches(0.6), Inches(1.55), Inches(3.2), Inches(0.04))
+        has_k = bool(s.get("kicker"))
+        ky = 0.42 if has_k else 0.55
+        ty = 0.82 if has_k else 0.6
+        ly = 1.55 if has_k else 1.3
+        if has_k:
+            add_text(slide, 0.6, ky, 12, 0.4, s["kicker"], 16, CYAN, bold=True)
+        add_text(slide, 0.6, ty, 12.1, 0.7, s["title"], 30, WHITE, bold=True)
+        ln = slide.shapes.add_shape(1, Inches(0.6), Inches(ly), Inches(3.2), Inches(0.04))
         ln.fill.solid(); ln.fill.fore_color.rgb = CYAN; ln.line.fill.background()
-        items = s["items"]; top = 1.78; rh = 0.92; gap = 0.12
+        items = s["items"]; top = ly + 0.23; rh = 0.92; gap = 0.12
         for i, it in enumerate(items):
             y = top + i * (rh + gap)
             col = PptRGB(*it["c"])
@@ -604,6 +614,20 @@ def render_pptx(path):
 
         elif t == "mockup":
             add_mockup(slide, s)
+            footer(slide, idx, s.get("chapter", ""))
+
+        elif t == "real_ui":
+            bg(slide, WHITE)
+            top_bar(slide, s["title"], s["kicker"])
+            img_path = os.path.join(SCREENSHOT_DIR, s["image"])
+            if os.path.exists(img_path):
+                slide.shapes.add_picture(img_path, Inches(0.55), Inches(1.24), width=Inches(11.59))
+            else:
+                add_text(slide, 0.8, 2.0, 10, 3,
+                         f"[实际界面截图缺失: {s['image']}]", 18, RED)
+            add_text(slide, 0.6, 6.95, 12.13, 0.4,
+                     "📌 真实界面：左侧任务列表 / 中间对话区 / 右侧结果区，三区一目了然。",
+                     13, GREY)
             footer(slide, idx, s.get("chapter", ""))
 
         elif t == "launch":
@@ -793,6 +817,20 @@ def render_pdf(path):
             text(50, ph - 230, "在哪里：左侧栏管任务，中间下达与追问，右侧验收产物。", 14, BLUE_H, bold=True)
             footer_p(idx, s.get("chapter", ""))
 
+        elif t == "real_ui":
+            rect(0, 0, pw, ph, (0xFF, 0xFF, 0xFF))
+            rect(0, ph - 90, pw, 90, NAVY_H)
+            text(50, ph - 62, s["title"], 23, (0xFF, 0xFF, 0xFF), bold=True)
+            text(50, ph - 82, s["kicker"], 12, (0xEA, 0xF1, 0xFD))
+            img_path = os.path.join(SCREENSHOT_DIR, s["image"])
+            if os.path.exists(img_path):
+                from reportlab.lib.utils import ImageReader
+                ir = ImageReader(img_path); iw, ih = ir.getSize()
+                scale = min((pw - 100) / iw, (ph - 260) / ih) * 0.9
+                c.drawImage(ir, 50, ph - 430, iw * scale, ih * scale)
+            text(50, ph - 450, "真实界面：左侧任务列表 / 中间对话区 / 右侧结果区。", 13, GREY_H)
+            footer_p(idx, s.get("chapter", ""))
+
         elif t == "launch":
             rect(0, 0, pw, ph, NAVY_H)
             text(50, ph - 55, s["kicker"], 15, (0x17, 0xC0, 0xC7), bold=True)
@@ -919,7 +957,7 @@ def write_outline(path):
              "> 用统一案例演示使用流程，再加进阶技巧，Demo 结果顺带展示。", ""]
     type_cn = {"cover": "封面", "divider": "章节", "content": "内容", "feature": "功能",
                "mockup": "界面示意", "chart": "图表", "compare": "对比", "flow": "流程",
-               "closing": "结语", "launch": "发布会", "demo_charts": "可视化"}
+               "closing": "结语", "launch": "发布会", "demo_charts": "可视化", "real_ui": "实际界面"}
     for i, s in enumerate(SLIDES, start=1):
         extra = ""
         if s.get("image"):

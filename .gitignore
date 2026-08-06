@@ -81,3 +81,6 @@ secrets.yaml
 !12-video-backup/recording-notes.md
 !07-screenshots/screenshot-index.md
 !.gitignore
+
+# 用户手动调整的本地副本（已被 02-slides/workbuddy-beginner-training.pptx 取代）
+02-slides/人工修改*.pptx
